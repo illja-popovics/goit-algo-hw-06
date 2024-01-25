@@ -39,9 +39,4 @@ bfs_result = bfs_paths(G, start_station, end_station)
 print("DFS Paths:", dfs_result)
 print("BFS Path:", bfs_result)
 
-# Explanation of paths
-print("\nExplanation:")
-print("DFS explores one branch of the graph as deeply as possible before backtracking, "
-      "so it may find longer paths before shorter ones.")
-print("BFS explores all neighbors of a node before moving on to their neighbors, "
-      "so it often finds the shortest path first.")
+
