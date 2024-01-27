@@ -1,5 +1,5 @@
 import networkx as nx
-import matplotlib.pyplot as plt
+import heapq
 
 # Create a graph with U-Bahn stations in Hamburg
 G = nx.Graph()
@@ -42,7 +42,35 @@ G.add_edges_from([("Saarlandstraße","Kellinghusestraße", {'weight': 3}),
                   ("Hamburger Straße", "Barmbek", {'weight': 1}),
                   ("Barmbek", "Saarlandstraße", {'weight': 2})])
 
+# Dijkstra's algorithm to find the shortest path from a source to all other nodes
+def dijkstra(graph, start):
+    distances = {node: float('infinity') for node in graph.nodes}
+    distances[start] = 0
 
-shortest_paths = dict(nx.all_pairs_dijkstra(G, weight='weight'))
-print(shortest_paths)
+    priority_queue = [(0, start)]
+
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+
+        if current_distance > distances[current_node]:
+            continue
+
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight['weight']
+
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(priority_queue, (distance, neighbor))
+
+    return distances
+
+# Find shortest paths for all nodes
+all_shortest_paths = {}
+
+for start_node in G.nodes:
+    shortest_distances = dijkstra(G, start_node)
+    all_shortest_paths[start_node] = shortest_distances
+
+# Print the shortest paths
+print(all_shortest_paths)
 
